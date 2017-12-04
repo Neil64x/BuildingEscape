@@ -16,20 +16,23 @@ UOpenDoor::UOpenDoor()
 }
 
 
+void UOpenDoor::OpenDoor()
+{
+	AActor* Owner = GetOwner();
+	FRotator NewRotation = FRotator(0.0f, myOpenAngle, 0.0f);
+
+	Owner->SetActorRotation(NewRotation);
+	//FString Coordinates = Owner->GetTransform().GetLocation().ToString();
+	//UE_LOG(LogTemp, Warning, TEXT("Coordinate %s"), *Coordinates);
+}
+
 // Called when the game starts
 void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AActor* Owner = GetOwner();
-	FRotator NewRotation = FRotator(0.0f, -60.0f, 0.0f);
+	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 
-	Owner->SetActorRotation(NewRotation);
-	FString Coordinates = Owner->GetTransform().GetLocation().ToString();
-	UE_LOG(LogTemp, Warning, TEXT("Coordinate %s"), *Coordinates);
-
-	// ...
-	
 }
 
 
@@ -38,6 +41,11 @@ void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompo
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	// ...
+	// Poll the trigger volume
+	//If the ActorThatOpen is in the volume
+	if (PressurePlate->IsOverlappingActor(ActorThatOpens))
+	{
+		OpenDoor();
+	}
 }
 
