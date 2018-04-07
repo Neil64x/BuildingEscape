@@ -16,7 +16,7 @@ public:
 	UOpenDoor();
 
 	void OpenDoor();
-
+	void CloseDoor();
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
@@ -24,7 +24,10 @@ public:
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
 private:
-	UPROPERTY (VisibleAnywhere)
+
+	AActor* Owner;
+
+	UPROPERTY (EditAnywhere)
 	float myOpenAngle = -60.0f;
 	
 	UPROPERTY(EditAnywhere)
@@ -32,5 +35,10 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	AActor* ActorThatOpens; //Remember Pawn inherits from AAcotor
+
+	UPROPERTY(EditAnywhere)
+	float DoorCloseDelay = 1.0f;
+
+	float LastDoorOpenTime;
 
 };
